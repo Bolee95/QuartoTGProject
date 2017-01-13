@@ -10,7 +10,6 @@ namespace QuartoTGProject.Podaci
 {
     public class Figura : Button
     {
-        public static int temp = 0;
         
         bool kontrola;
         public static Figura glob;
@@ -124,10 +123,13 @@ namespace QuartoTGProject.Podaci
             popunjeno = g.popunjeno;
             this.Click += new EventHandler(this.KlikMisa);
         }
+
         public Figura() {
             this.Click += new EventHandler(this.KlikMisa);
             popunjeno = 0;
         }
+
+
         private void KlikMisa(object sender, EventArgs e) {
             if (this.Kontrola == true)
             {
@@ -136,8 +138,6 @@ namespace QuartoTGProject.Podaci
                   
                 }
                 glob = this;
-
-
             }
             else if (glob != null)
             {
@@ -156,10 +156,9 @@ namespace QuartoTGProject.Podaci
                     {
                         x = x,
                         y = y,
-                    });
+                    },glob);
                     prethodna = new Figura(glob);
                     iskorisceneKontrole.Add(glob);
-
                     
                     validacijaKontrola();
                     
@@ -167,7 +166,6 @@ namespace QuartoTGProject.Podaci
                     glob = null;
                     //kontekst.TrenutnoStanje.DaLiJeKraj();
                     Form1.DaLiJeKraj();
-
 
                 }
               
@@ -196,18 +194,20 @@ namespace QuartoTGProject.Podaci
                     if (!Form1.DaLiJeKraj()/*f.kontekst.TrenutnoStanje.DaLiJeKraj()*/)
                     {
                         Potez px = Context.AlfaBeta(kontekst, int.MinValue, int.MaxValue, 3 , true);
-                        if (Form1.mat[px.x][px.y].Popunjeno == 0)
+                        Potez dx = nadjiNajboljiPotez();
+                        Context._potezi.Clear();
+                        if (Form1.mat[dx.x][dx.y].Popunjeno == 0)
                         {
-                            f.UradiPotez(px);
-                            if (color == true)
+                            f.UradiPotez(dx,figure);
+                            if (figure.Color == true)
                                 Form1.mat[px.x][px.y].BackColor = System.Drawing.Color.Red;
-
                             else
-                                Form1.mat[px.x][px.y].BackColor = System.Drawing.Color.Blue;
-                            Form1.mat[px.x][px.y].Text = figure.ToString();
-                            Form1.mat[px.x][px.y].heigth = figure.heigth;
-                            Form1.mat[px.x][px.y].shape = figure.shape;
-                            Form1.mat[px.x][px.y].top = figure.top;
+                                Form1.mat[dx.x][dx.y].BackColor = System.Drawing.Color.Blue;
+
+                            Form1.mat[dx.x][dx.y].Text = figure.ToString();
+                            Form1.mat[dx.x][dx.y].Heigth = figure.heigth;
+                            Form1.mat[dx.x][dx.y].Shape = figure.shape;
+                            Form1.mat[dx.x][dx.y].Top = figure.top;
                             prethodna = new Figura(figure);
                             iskorisceneKontrole.Add(figure);
                             validacijaKontrola();
@@ -278,6 +278,38 @@ namespace QuartoTGProject.Podaci
             else s += "0";
             return s;
 
+        }
+
+        public Potez nadjiNajboljiPotez()
+        {
+            List<Potez> nex = new List<Potez>();
+            Potez xx = new Potez();
+            foreach (var xe in Context._potezi)
+            {
+                if (xe.Value == 1000)
+                    return xx = xe;
+                else if (xe.Value == 800)
+                    // return xx = xe;
+                    if (Form1.mat[xe.x][xe.y].popunjeno == 0)
+                        nex.Add(xe);
+                    else if (xe.Value == 500)
+                        if (Form1.mat[xe.x][xe.y].popunjeno == 0)
+                            nex.Add(xe);
+                        else if (xe.Value == 400)
+                            if (Form1.mat[xe.x][xe.y].popunjeno == 0)
+                                nex.Add(xe);
+                            else if (xe.Value == 0)
+                                if (Form1.mat[xe.x][xe.y].popunjeno == 0)
+                                    nex.Add(xe);
+            }
+            int z = nex.Count();
+            do
+            {
+                Random x = new Random();
+                int y = x.Next();
+            }
+            while (Form1.mat[nex[y % z].x][nex[y % z].y].popunjeno != 0);
+            return nex[y % z];
         }
     }
 }

@@ -13,8 +13,8 @@ namespace QuartoTGProject.Podaci
         public static string t = "";
         public Form1 test { get; set; }
         public Figura[][] _mat;
-        
-        public int pobedio = 0;
+        //promena 
+        public static int pobedio = 0;
         public Tabla()
         {
             _mat = new Figura[4][];
@@ -64,15 +64,31 @@ namespace QuartoTGProject.Podaci
             }
             info = null;
             _mat[x][y].Popunjeno = igrac;
-
-
-          
-                    return true;
-
-
+            return true;
         }
-        
-         //-------------->>>>>>>>Provera prebacena u formu<<<<<<-------------
+
+        /*   public bool Potez(int i, int x, int y, out string info)
+           {
+               if (_mat[x][y].Popunjeno != 0)
+               {
+                   info = "NEVALIDAN POTEZ!\nPolje je zauzeto!";
+                   return false;
+               }
+               info = null;
+               _mat[x][y].Popunjeno = i;
+               // Form1.mat[x][y].Popunjeno = igrac;
+
+               //menjano
+               _mat[x][y].x = x;
+               _mat[x][y].y = y;
+               //  Form1.mat[x][y].x = x;
+               //  Form1.mat[x][y].y = y;
+               return true;
+
+
+           }
+           */
+        //-------------->>>>>>>>Provera prebacena u formu<<<<<<-------------
         //public bool DaLiJeKraj()
         //{
         //    int c, cf, h, hf, s, sf, t, tf;
@@ -226,10 +242,10 @@ namespace QuartoTGProject.Podaci
             if (Form1.DaLiJeKraj()/*DaLiJeKraj(/*out pobedio)*/)
             {
                 if (pobedio == 1)
-                    return -100;
+                    return -1000;
                 if (pobedio == 2)
-                    return 100;
-                if (pobedio == 3)
+                    return 1000;
+                if (pobedio == 0)
                     return 0;
             }
             return proveriTablu(xx);
@@ -237,6 +253,7 @@ namespace QuartoTGProject.Podaci
 
         //uklonio sam nepotrebne provere uslova i uprostio kod
         //ubacio sam brojace u petlje gde treba da budu
+
         public int proveriTablu(int x)
         {
             for (int i = 0; i < 4; i++)
@@ -248,87 +265,97 @@ namespace QuartoTGProject.Podaci
                 t += "\n";
             }
             t += "\n";
-                int visina, vrh, boja, oblik;
-            visina = vrh = boja = oblik = 0;
+            int visina;
+            visina = 0;
 
             for (int i = 0; i < 4; i++)
             {
-                if (_mat[i][i].Popunjeno == 0)
-                    continue;
-                if (_mat[i][i].Top)
-                    vrh++;
-                else if (_mat[i][i].Popunjeno !=0)
-                    vrh--;
+                {
+                    if (_mat[i][i].Popunjeno == 0)
+                        continue;
+                    else
+                        visina++;
+                    //    //if (_mat[i][i].Top)
+                    //    //    vrh++;
+                    //    else if (_mat[i][i].Popunjeno !=0)
+                    //        vrh--;
 
-                if (_mat[i][i].Shape)
-                    oblik++;
-                else if (_mat[i][i].Popunjeno != 0)
-                    oblik--;
+                    //    if (_mat[i][i].Shape)
+                    //        oblik++;
+                    //    else if (_mat[i][i].Popunjeno != 0)
+                    //        oblik--;
 
-                if (_mat[i][i].Color)
-                    boja++;
-                else if  (_mat[i][i].Popunjeno != 0)
-                    boja--;
+                    //    if (_mat[i][i].Color)
+                    //        boja++;
+                    //    else if  (_mat[i][i].Popunjeno != 0)
+                    //        boja--;
 
-                if (_mat[i][i].Heigth)
-                    visina++;
-                else if (_mat[i][i].Popunjeno != 0)
-                    visina--;
+                    //    if (_mat[i][i].Heigth)
+                    //        visina++;
+                    //    else if (_mat[i][i].Popunjeno != 0)
+                    //        visina--;
+                    //}
+                }
+
+                // if ((vrh % 4 == 0 && vrh != 0) || (oblik % 4 == 0 && oblik != 0) || (boja % 4 == 0 && boja != 0) || (visina % 4 == 0 && visina != 0)) //promeni ako ne radi)
+                if (visina == 4)
+                    if (x == 2)
+                    {
+                        pobedio = 2;
+                        return 2000;
+                    }
+                    else if (x == 1)
+                    {
+                        pobedio = 1;
+                        return -2000;
+                    }
+                // if ((vrh % 3 == 0 && vrh != 0) || (oblik % 3 == 0 && oblik != 0) || (boja % 3 == 0 && boja != 0) || (visina % 3 == 0 && visina != 0)) //promeni ako ne radi
+                if (visina == 3)
+                    if (x == 2)
+                        return 800;
+                    else if (x == 1)
+                        return -800;
+                if (visina == 2)//((vrh % 2 == 0 && vrh != 0) || (oblik % 2 == 0 && oblik != 0) || (boja % 2 == 0 && boja != 0) || (visina % 2 == 0 && visina != 0))
+                    if (x == 2)
+                        return -500;
+                    else if (x == 1)
+                        return 500;
             }
-            if ((vrh % 4 == 0 && vrh != 0) || (oblik % 4 == 0 && oblik != 0) || (boja % 4 == 0 && boja != 0) || (visina % 4 == 0 && visina != 0)) //promeni ako ne radi)
-                if (x == 2)
-                {
-                    pobedio = 2;
-                    return 2000;
-                }
-                else if (x == 1)
-                {
-                    pobedio = 1;
-                    return -2000;
-                }
+            visina = 0;
 
-
-
-            if ((vrh % 3 == 0 && vrh != 0) || (oblik % 3 == 0 && oblik != 0) || (boja % 3 == 0 && boja != 0) || (visina % 3 == 0 && visina != 0)) //promeni ako ne radi
-                if (x == 2)
-                    return -80;
-                else if (x == 1)
-                    return 80;
-            if ((vrh % 2 == 0 && vrh != 0) || (oblik % 2 == 0 && oblik != 0) || (boja % 2 == 0 && boja != 0) || (visina % 2 == 0 && visina != 0))
-                if (x == 2)
-                    return -50;
-                else if (x == 1)
-                    return 50;
-
-
-
-            for (int i = 0; i < 4; i++)
+            for (int ix = 0; ix < 4; ix++)
             {
-                visina = vrh = boja = oblik = 0;
+                visina = 0;
                 for (int j = 0; j < 4; j++)
                 {
-                    if (_mat[i][j].Popunjeno == 0)
+                    if (_mat[ix][j].Popunjeno == 0)
                         continue;
-                    if (_mat[i][j].Top)
-                        vrh++;
-                    else if (_mat[i][j].Popunjeno !=0)
-                        vrh--;
-
-                    if (_mat[i][j].Shape)
-                        oblik++;
-                    else if (_mat[i][j].Popunjeno != 0)
-                        oblik--;
-                    if (_mat[i][j].Color)
-                        boja++;
-                    else if (_mat[i][j].Popunjeno != 0)
-                        boja--;
-
-                    if (_mat[i][j].Heigth)
+                    else
                         visina++;
-                    else if (_mat[i][j].Popunjeno != 0)
-                        visina--;
+                    //    if (_mat[i][j].Popunjeno == 0)
+                    //        continue;
+                    //    if (_mat[i][j].Top)
+                    //        vrh++;
+                    //    else if (_mat[i][j].Popunjeno !=0)
+                    //        vrh--;
+
+                    //    if (_mat[i][j].Shape)
+                    //        oblik++;
+                    //    else if (_mat[i][j].Popunjeno != 0)
+                    //        oblik--;
+                    //    if (_mat[i][j].Color)
+                    //        boja++;
+                    //    else if (_mat[i][j].Popunjeno != 0)
+                    //        boja--;
+
+                    //    if (_mat[i][j].Heigth)
+                    //        visina++;
+                    //    else if (_mat[i][j].Popunjeno != 0)
+                    //        visina--;
+                    //}
                 }
-                if ((vrh % 4 == 0 && vrh != 0) || (oblik % 4 == 0 && oblik != 0) || (boja % 4 == 0 && boja != 0) || (visina % 4 == 0 && visina != 0)) //promeni ako ne radi)
+
+                if (visina == 4)//((vrh % 4 == 0 && vrh != 0) || (oblik % 4 == 0 && oblik != 0) || (boja % 4 == 0 && boja != 0) || (visina % 4 == 0 && visina != 0)) //promeni ako ne radi)
                 {
                     if (x == 2)
                     {
@@ -341,55 +368,57 @@ namespace QuartoTGProject.Podaci
                     {
                         pobedio = 2;
                         return -2000;
-                           
+
                     }
                 }
                 else
-                if ((vrh % 3 == 0 && vrh != 0) || (oblik % 3 == 0 && oblik != 0) || (boja % 3 == 0 && boja != 0) || (visina % 3 == 0 && visina != 0)) //promeni ako ne radi
+                if (visina == 3)//((vrh % 3 == 0 && vrh != 0) || (oblik % 3 == 0 && oblik != 0) || (boja % 3 == 0 && boja != 0) || (visina % 3 == 0 && visina != 0)) //promeni ako ne radi
                     if (x == 2)
-                        return -80;
+                        return 800;
                     else if (x == 1)
-                        return 80;
+                        return -800;
 
-                if ((vrh % 2 == 0 && vrh != 0) || (oblik % 2 == 0 && oblik != 0) || (boja % 2 == 0 && boja != 0) || (visina % 2 == 0 && visina != 0))
+                if (visina == 2)//((vrh % 2 == 0 && vrh != 0) || (oblik % 2 == 0 && oblik != 0) || (boja % 2 == 0 && boja != 0) || (visina % 2 == 0 && visina != 0))
                 {
                     if (x == 2)
-                        return -20;
+                        return -500;
                     else if (x == 1)
-                        return 20;
+                        return 500;
                 }
             }
 
 
             for (int i = 0; i < 4; i++)
             {
-                visina = vrh = boja = oblik = 0;
+                visina = 0;
                 for (int j = 0; j < 4; j++)
                 {
                     if (_mat[j][i].Popunjeno == 0)
                         continue;
-                    if (_mat[j][i].Top)
-                        vrh++;
-                    else if (_mat[j][i].Popunjeno !=0)
-                        vrh--;
-
-                    if (_mat[j][i].Shape)
-                        oblik++;
-                    else if (_mat[j][i].Popunjeno != 0)
-                        oblik--;
-
-                    if (_mat[j][i].Color)
-                        boja++;
-                    else if (_mat[j][i].Popunjeno != 0)
-                        boja--;
-
-                    if (_mat[j][i].Heigth)
+                    else
                         visina++;
-                    else if (_mat[j][i].Popunjeno != 0)
-                        visina--;
+                    //if (_mat[j][i].Top)
+                    //    vrh++;
+                    //else if (_mat[j][i].Popunjeno !=0)
+                    //    vrh--;
+
+                    //if (_mat[j][i].Shape)
+                    //    oblik++;
+                    //else if (_mat[j][i].Popunjeno != 0)
+                    //    oblik--;
+
+                    //if (_mat[j][i].Color)
+                    //    boja++;
+                    //else if (_mat[j][i].Popunjeno != 0)
+                    //    boja--;
+
+                    //if (_mat[j][i].Heigth)
+                    //    visina++;
+                    //else if (_mat[j][i].Popunjeno != 0)
+                    //    visina--;
 
                 }
-                if ((vrh % 4 == 0 && vrh != 0) || (oblik % 4 == 0 && oblik != 0) || (boja % 4 == 0 && boja != 0) || (visina % 4 == 0 && visina != 0)) //promeni ako ne radi)
+                if (visina == 4)//((vrh % 4 == 0 && vrh != 0) || (oblik % 4 == 0 && oblik != 0) || (boja % 4 == 0 && boja != 0) || (visina % 4 == 0 && visina != 0)) //promeni ako ne radi)
                 {
                     if (x == 2)
                     {
@@ -401,55 +430,52 @@ namespace QuartoTGProject.Podaci
                         pobedio = 1;
                         return -2000;
                     }
-                 }
-                if ((vrh % 3 == 0 && vrh != 0) || (oblik % 3 == 0 && oblik != 0) || (boja % 3 == 0 && boja != 0) || (visina % 3 == 0 && visina != 0)) //promeni ako ne radi
+                }
+                if (visina == 3)//((vrh % 3 == 0 && vrh != 0) || (oblik % 3 == 0 && oblik != 0) || (boja % 3 == 0 && boja != 0) || (visina % 3 == 0 && visina != 0)) //promeni ako ne radi
                 {
                     if (x == 2)
-                        return -80;
+                        return 800;
                     else if (x == 1)
-                        return 80;
+                        return -800;
                 }
 
-                if ((vrh % 2 == 0 && vrh != 0) || (oblik % 2 == 0 && oblik != 0) || (boja % 2 == 0 && boja != 0) || (visina % 2 == 0 && visina != 0))
+                if (visina == 2)//((vrh % 2 == 0 && vrh != 0) || (oblik % 2 == 0 && oblik != 0) || (boja % 2 == 0 && boja != 0) || (visina % 2 == 0 && visina != 0))
 
                     if (x == 2)
-                        return -50;
+                        return -500;
                     else if (x == 1)
-                        return 50;
-
-
-                visina = vrh = boja = oblik = 0;
-
+                        return 500;
             }
 
             for (int i = 0; i < 4; i++)
             {
-                
+
                 if (_mat[i][3 - i].Popunjeno == 0)
                     continue;
-                if (_mat[i][3 - i].Top)
-                    vrh++;
-                else if (_mat[i][3 - i].Popunjeno != 0)
-                    vrh--;
+                else visina++;
+                //if (_mat[i][3 - i].Top)
+                //    vrh++;
+                //else if (_mat[i][3 - i].Popunjeno != 0)
+                //    vrh--;
 
-                if (_mat[i][3 - i].Shape)
-                    oblik++;
-                else if (_mat[i][3 - i].Popunjeno != 0)
-                    oblik--;
+                //if (_mat[i][3 - i].Shape)
+                //    oblik++;
+                //else if (_mat[i][3 - i].Popunjeno != 0)
+                //    oblik--;
 
-                if (_mat[i][3 - i].Color == true)
-                    boja++;
-                else if (_mat[i][3 - i].Popunjeno != 0)
-                    boja--;
+                //if (_mat[i][3 - i].Color == true)
+                //    boja++;
+                //else if (_mat[i][3 - i].Popunjeno != 0)
+                //    boja--;
 
-                if (_mat[i][3 - i].Heigth)
-                    visina++;
-                else if (_mat[i][3 - i].Popunjeno != 0)
+                //if (_mat[i][3 - i].Heigth)
+                //    visina++;
+                //else if (_mat[i][3 - i].Popunjeno != 0)
 
-                    if (_mat[i][3 - i].Popunjeno != 0)
-                    visina--;
+                //    if (_mat[i][3 - i].Popunjeno != 0)
+                //    visina--;
             }
-            if ((vrh % 4 == 0 && vrh != 0) || (oblik % 4 == 0 && oblik != 0) || (boja % 4 == 0 && boja != 0) || (visina % 4 == 0 && visina != 0)) //promeni ako ne radi)
+            if (visina == 4)//((vrh % 4 == 0 && vrh != 0) || (oblik % 4 == 0 && oblik != 0) || (boja % 4 == 0 && boja != 0) || (visina % 4 == 0 && visina != 0)) //promeni ako ne radi)
             {
                 if (x == 2)
                 {
@@ -462,23 +488,22 @@ namespace QuartoTGProject.Podaci
                     return -2000;
                 }
             }
-            if ((vrh % 3 == 0 && vrh != 0) || (oblik % 3 == 0 && oblik != 0) || (boja % 3 == 0 && boja != 0) || (visina % 3 == 0 && visina != 0)) //promeni ako ne radi
+            if (visina == 3)//((vrh % 3 == 0 && vrh != 0) || (oblik % 3 == 0 && oblik != 0) || (boja % 3 == 0 && boja != 0) || (visina % 3 == 0 && visina != 0)) //promeni ako ne radi
                 if (x == 2)
-                    return -80;
+                    return 800;
                 else if (x == 1)
-                    return 80;
+                    return -800;
 
-            if ((vrh % 2 == 0 && vrh != 0) || (oblik % 2 == 0 && oblik != 0) || (boja % 2 == 0 && boja != 0) || (visina % 2 == 0 && visina != 0))
+            if (visina == 2)//((vrh % 2 == 0 && vrh != 0) || (oblik % 2 == 0 && oblik != 0) || (boja % 2 == 0 && boja != 0) || (visina % 2 == 0 && visina != 0))
             {
                 if (x == 2)
-                    return -50;
+                    return -500;
                 else if (x == 1)
-                    return 50;
+                    return 500;
             }
-            
+           
+           return 100;
 
-            
-            return 0;
         }
 
         public object Clone()

@@ -104,7 +104,7 @@ namespace QuartoTGProject
             Figura.Kontrole = kontrolniDugmici;
 
         }
-        public virtual void UradiPotez(Potez p)
+        public virtual void UradiPotez(Potez p, Figura fg)
         {
             textBox1.Text = "";
             for (int i=0; i < 4;i++)
@@ -116,7 +116,8 @@ namespace QuartoTGProject
                 textBox1.Text += "\n";
             }
             string info;
-            if (kontekst.TrenutnoStanje.Potez(kontekst.NaPotezu, p.x, p.y, out info))
+            //Promena
+            if (kontekst.TrenutnoStanje.Potez(1, p.x, p.y, out info))
             {
                 if (Form1.DaLiJeKraj()/*kontekst.TrenutnoStanje.DaLiJeKraj()*/)
                 {
@@ -164,7 +165,7 @@ namespace QuartoTGProject
             this.crtajTablu();
             crtajKontrolneDugmice();
             kontekst = new Context(new Tabla(), 1);
-            kontekst.TrenutnoStanje._mat = mat;
+            kontekst.TrenutnoStanje._mat = mat; //ispitaj to
            
             Figura.kontekst = kontekst;
         }
@@ -176,6 +177,7 @@ namespace QuartoTGProject
             //glavna dijagonala
             for (int i = 0; i < 4; i++)
             {
+
                 if (mat[i][i].Popunjeno != 0)
                 {
                     if (mat[i][i].Color)
