@@ -8,7 +8,7 @@ namespace QuartoTGProject.Podaci
 {
     public class Context
     {
-        private List<Potez> _potezi = new List<Potez>();
+        public static  List<Potez> _potezi = new List<Potez>();
         public int NaPotezu { get; set; }
         public Tabla TrenutnoStanje { get;  set; }
 
@@ -46,14 +46,30 @@ namespace QuartoTGProject.Podaci
 
         public List<Potez> GetListaMogucihPoteza()
         {
+            int s=0, f = 0;
             List<Potez> potezi = TrenutnoStanje.GetListaPoteza();
             potezi.ForEach(x =>
             {
+                if (s != 0)
+                {
+                    s = s % 3;
+                    if (s == 0)
+                        f++;
+                }
+                if (f !=0 )
+                {
+                  
+                        f = f % 3;
+                }
+                
                 string info;
                 x.PrethodnoStanje = this;
                 x.NarednoStanje = new Context(new Tabla(TrenutnoStanje), NaPotezu);
-                x.NarednoStanje.TrenutnoStanje.Potez(NaPotezu, x.x, x.y, out info);
+                // x.NarednoStanje.TrenutnoStanje.Potez(NaPotezu, x.x, x.y, out info);
+                
+                x.NarednoStanje.TrenutnoStanje.Potez(NaPotezu, f, s, out info);
                 x.NarednoStanje.Sledeci();
+                s++;
             });
             return potezi;
         }
@@ -139,6 +155,7 @@ namespace QuartoTGProject.Podaci
                 foreach (Potez m in moves)
                 {
                     ret = AlfaBeta(m.NarednoStanje, alfa, beta, depth - 1, false);
+                    
                     int val = System.Math.Max(ret.Value, bestV.Value);
                     if(val >= ret.Value)
                     {
@@ -151,8 +168,10 @@ namespace QuartoTGProject.Podaci
                         break;
                     }
                 }
+                if (!_potezi.Contains(bestV))
+                _potezi.Add(bestV);
                 return bestV;
-
+                
             }
             else
             {
@@ -161,6 +180,7 @@ namespace QuartoTGProject.Podaci
                 foreach (Potez m in moves)
                 {
                     ret = AlfaBeta(m.NarednoStanje, alfa, beta, depth - 1, true);
+                    
                     int val = Math.Min(ret.Value, bestV.Value);
                     if (val <=ret.Value)
                     {
@@ -173,6 +193,8 @@ namespace QuartoTGProject.Podaci
                         break;
                     }
                 }
+                 if (!_potezi.Contains(bestV))
+                _potezi.Add(bestV);
                 return bestV;            
             }
         }

@@ -146,7 +146,7 @@ namespace QuartoTGProject
                 for (int i = 0; i < 4; i++)
                 {
                     for (int j = 0; j < 4; j++)
-                        k += kontekst.TrenutnoStanje._mat[i][j].Popunjeno + " ";
+                        k += kontekst.TrenutnoStanje._mat[i,j] + " ";
                     k += "\n";
                 }
                 MessageBox.Show(k, "Trenutno stanje matrice odnosno table");
@@ -164,7 +164,9 @@ namespace QuartoTGProject
             this.crtajTablu();
             crtajKontrolneDugmice();
             kontekst = new Context(new Tabla(), 1);
-            kontekst.TrenutnoStanje._mat = mat;
+            for (int i=0;i<4;i++)
+                for (int j=0;j<4;j++)
+                    kontekst.TrenutnoStanje._mat[i,j] = mat[i][j].Popunjeno;
            
             Figura.kontekst = kontekst;
         }

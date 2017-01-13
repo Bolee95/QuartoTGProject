@@ -128,102 +128,123 @@ namespace QuartoTGProject.Podaci
             this.Click += new EventHandler(this.KlikMisa);
             popunjeno = 0;
         }
-        private void KlikMisa(object sender, EventArgs e) {
-            if (this.Kontrola == true)
+        private void KlikMisa(object sender, EventArgs e)
+        {
+            if (!Form1.DaLiJeKraj())
             {
-                if (prethodna != null)
+                if (this.Kontrola == true)
                 {
-                  
-                }
-                glob = this;
-
-
-            }
-            else if (glob != null)
-            {
-                if (String.IsNullOrEmpty(Text))
-                {
-                   
-                    this.color = glob.color;
-                    this.heigth = glob.heigth;
-                    this.top = glob.top;
-                    this.shape = glob.shape;
-                    this.Text = ToString();
-                    if (color == true)
-                        this.BackColor = System.Drawing.Color.Red;
-                    else BackColor = System.Drawing.Color.Blue;
-                    f.UradiPotez(new Potez()
+                    if (prethodna != null)
                     {
-                        x = x,
-                        y = y,
-                    });
-                    prethodna = new Figura(glob);
-                    iskorisceneKontrole.Add(glob);
 
-                    
-                    validacijaKontrola();
-                    
-                    glob.Visible = false;
-                    glob = null;
-                    //kontekst.TrenutnoStanje.DaLiJeKraj();
-                    Form1.DaLiJeKraj();
-
-
-                }
-              
-            }
-            if (kontekst.NaPotezu == 2) // treba da uzima kontrolno dugme i da ga preslika na tablu
-            {
-                try
-                {
-                    if (kontekst.TrenutnoStanje.DoKraja() == 0)
-                    {
-                        MessageBox.Show("Nerešeno");
-                        return;
                     }
-                    Figura figure = new Figura();
-                    foreach(Figura f in Kontrole)
-                    {
+                    glob = this;
 
-                        if (f.Enabled)
+
+                }
+                else if (glob != null)
+                {
+                    if (String.IsNullOrEmpty(Text))
+                    {
+                        this.Popunjeno = 1;
+                        this.color = glob.color;
+                        this.heigth = glob.heigth;
+                        this.top = glob.top;
+                        this.shape = glob.shape;
+                        this.Text = ToString();
+                        if (color == true)
+                            this.BackColor = System.Drawing.Color.Red;
+                        else BackColor = System.Drawing.Color.Blue;
+                        f.UradiPotez(new Potez()
                         {
-                            figure = f;
-                            break;
+                            x = x,
+                            y = y,
+                        });
+                        prethodna = new Figura(glob);
+                        iskorisceneKontrole.Add(glob);
+
+
+                        validacijaKontrola();
+
+                        glob.Visible = false;
+                        glob = null;
+                        // kontekst.TrenutnoStanje.DaLiJeKraj();
+                        Form1.DaLiJeKraj();
+
+
+                    }
+
+                }
+                if (kontekst.NaPotezu == 2) // treba da uzima kontrolno dugme i da ga preslika na tablu
+                {
+                    try
+                    {
+                        if (kontekst.TrenutnoStanje.DoKraja() == 0)
+                        {
+                            MessageBox.Show("Nerešeno");
+                            return;
                         }
-                          
-                    }
-                    // mozda ovde treba proveriti da li je kraj
-                    if (!Form1.DaLiJeKraj()/*f.kontekst.TrenutnoStanje.DaLiJeKraj()*/)
-                    {
-                        Potez px = Context.AlfaBeta(kontekst, int.MinValue, int.MaxValue, 3 , true);
-                        if (Form1.mat[px.x][px.y].Popunjeno == 0)
+                        Figura figure = new Figura();
+                        foreach (Figura f in Kontrole)
                         {
-                            f.UradiPotez(px);
-                            if (color == true)
-                                Form1.mat[px.x][px.y].BackColor = System.Drawing.Color.Red;
 
+                            if (f.Enabled)
+                            {
+                                figure = f;
+                                break;
+                            }
+
+                        }
+                        // mozda ovde treba proveriti da li je kraj
+                        if (!Form1.DaLiJeKraj())//f.kontekst.TrenutnoStanje.DaLiJeKraj()//)
+                        {
+                            Potez px = Context.AlfaBeta(kontekst, int.MinValue, int.MaxValue, 4, true);
+                            Potez dx = nadjiNajboljiPotez(kontekst);
+                            Context._potezi.Clear();
+                            if (Form1.mat[dx.x][dx.y].Popunjeno == 0)
+                            {
+                                f.UradiPotez(dx);
+                                Form1.mat[dx.x][dx.y].Popunjeno = 1;
+                                if (figure.Color == true)
+                                    Form1.mat[dx.x][dx.y].BackColor = System.Drawing.Color.Red;
+                                else
+                                    Form1.mat[dx.x][dx.y].BackColor = System.Drawing.Color.Blue;
+                                Form1.mat[dx.x][dx.y].Text = figure.ToString();
+                                Form1.mat[dx.x][dx.y].heigth = figure.heigth;
+                                Form1.mat[dx.x][dx.y].shape = figure.shape;
+                                Form1.mat[dx.x][dx.y].top = figure.top;
+                                prethodna = new Figura(figure);
+                                iskorisceneKontrole.Add(figure);
+                                validacijaKontrola();
+                                figure.Visible = false;
+                                if(Form1.DaLiJeKraj())
+                                {
+                                    MessageBox.Show("Pobedio je drugi igrac!");
+                                }
+                            }
                             else
-                                Form1.mat[px.x][px.y].BackColor = System.Drawing.Color.Blue;
-                            Form1.mat[px.x][px.y].Text = figure.ToString();
-                            Form1.mat[px.x][px.y].heigth = figure.heigth;
-                            Form1.mat[px.x][px.y].shape = figure.shape;
-                            Form1.mat[px.x][px.y].top = figure.top;
-                            prethodna = new Figura(figure);
-                            iskorisceneKontrole.Add(figure);
-                            validacijaKontrola();
-                            figure.Visible = false;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Polje je popunjeno!");
+                            {
+                                MessageBox.Show("Polje je popunjeno!");
+                            }
                         }
                     }
+                    finally
+                    {
+                    }
                 }
-                finally
-                {
-                }
+            }
+            else
+            {
+                //Potez x = new Potez();
+                //{
+                  
+                //}
+                //f.UradiPotez(x);
+               // MessageBox.Show("Pobedio je drugi igrac!");
             }
         }
+        
+        
 
         public bool validacijaPoteza()
         {
@@ -278,6 +299,38 @@ namespace QuartoTGProject.Podaci
             else s += "0";
             return s;
 
+        }
+
+        public Potez nadjiNajboljiPotez(Context kontekst)
+        {
+            List<Potez> nex = new List<Potez>();
+            Potez xx = new Potez();
+            foreach (var xe in Context._potezi)
+            {
+                if (xe.Value == 2000 || xe.Value == 10000)
+                    return xx = xe;
+                 if (xe.Value == 800)
+                     return xx = xe;
+                  //  if (kontekst.TrenutnoStanje._mat[xe.x,xe.y] == 0)
+                        nex.Add(xe);
+                 if (xe.Value == 500)
+                      //  if (kontekst.TrenutnoStanje._mat[xe.x, xe.y] == 0)
+                            nex.Add(xe);
+                 if (xe.Value == 100)
+                          //  if (kontekst.TrenutnoStanje._mat[xe.x, xe.y] == 0)
+                                nex.Add(xe);
+                 if (xe.Value == 0)
+                               // if (kontekst.TrenutnoStanje._mat[xe.x, xe.y] == 0)
+                                    nex.Add(xe);
+            }
+            int z = nex.Count();
+            //do
+            //{
+                Random x = new Random();
+                int y = x.Next();
+            //}
+            //while (Form1.mat[nex[y % z].x][nex[y % z].y].popunjeno != 0);
+            return nex[y % z];
         }
     }
 }
